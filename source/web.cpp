@@ -2,19 +2,17 @@
 //  Copyright (C) Matthew Andres Moreno, 2021.
 //  Released under MIT license; see LICENSE
 
-#include <iostream>
+#include "emp/web/web.hpp"
 
-#include "web/web.h"
+emp::web::Document doc("target");
 
-#include "empirical-joss-demo/example.hpp"
+int x = 5;
+int main() {
+  doc << "<h1>Hello World!</h1>";
+  doc << "Original x = " << x << ".<br>";
+  doc << "Current x = " << emp::web::Live(x) << ".<br>";
 
-namespace UI = emp::web;
-
-UI::Document doc("emp_base");
-
-int main()
-{
-  doc << "<h1>Hello, browser!</h1>";
-  std::cout << "Hello, console!" << std::endl;
-  return example();
+  // Create a button to modify x.
+  emp::web::Button my_button( [](){ x+=5; doc.Redraw(); }, "Click me!" );
+  doc << my_button;
 }
